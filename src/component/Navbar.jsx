@@ -1,11 +1,15 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import NoteSearch from './NoteSearch'
+import { useDispatch } from 'react-redux'
+// import { NoteContext } from '../context/NoteAapp'
 
-const Navbar = ({onSearchNotes}) => {
+const Navbar = () => {
+  const dispatch = useDispatch()
+  // const { onSearchNotes } = useContext(NoteContext);
   return (
     <div className='note-app__header'>
         <h1>Notes</h1>
-        <NoteSearch onSearchNotes={onSearchNotes}/>
+        <NoteSearch />
     </div>
   )
 }

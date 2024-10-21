@@ -1,16 +1,25 @@
 import React from "react";
+import { deleteApiNote, archiveApiNote } from "../store/thunks/noteThunk.js";
 import { showFormDate } from "../data/DataNote.jsx"
+import { useDispatch } from "react-redux";
 
 
-const NoteItem = ({ note, OnDeleteNote, OnArchiveNote}) => {
+const NoteItem = ({ note }) => {
+
   const { id, title, body, createdAt, archived } = note;
+  
+  const dispatch = useDispatch();
   const hendleDeleteNote = () => {
-    OnDeleteNote(id);
+    dispatch(deleteApiNote(id));
   }
+
   const handleArchiveNote = () => {
-    OnArchiveNote(id);
+    // OnArchiveNote(note);
+    const editNote = { ...note, archived: !note.archived };
+    dispatch(archiveApiNote(editNote));
+    console.log(editNote)
   }
-  console.log('tes' + createdAt);
+
   return (
     <div className="note-item">
       <div className="note-item__content">

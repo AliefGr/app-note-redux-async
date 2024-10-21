@@ -1,10 +1,13 @@
-import React from 'react'
+import { useDispatch } from "react-redux";
+import {setKeyword} from "../store/slices/noteSlice"
 
-const NoteSearch = ({onSearchNotes}) => {
+const NoteSearch = () => {
+  
+  const dispatch = useDispatch()
 
   const handleSerach = (e) => {
     const keyword = e.target.value;
-    onSearchNotes(keyword);
+    dispatch(setKeyword(keyword))
   }
 
   return (

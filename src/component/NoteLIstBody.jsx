@@ -1,33 +1,47 @@
-import React from 'react'
-import NoteList from './NoteList'
+import React, { useEffect } from 'react';
+import NoteList from './NoteList';
+import { useDispatch, useSelector } from 'react-redux';
+import { fetchApiNotes } from '../store/thunks/noteThunk';
 
-const NoteLIstBody = ({notes, keyword, OnDeleteNote, OnArchiveNote}) => {
-    const filterNote = notes.filter((note) => 
-        note.title.toLowerCase().includes(keyword.toLowerCase())
-    );
-    
+const NoteLIstBody = () => {
+  const dispatch = useDispatch();
 
-    const activeNote = filterNote.filter((note) => !note.archived);
-    const archiveNote = filterNote.filter((note) => note.archived);
+  const notes = useSelector((state) => state.notes.data);
+  const keyword = useSelector((state) => state.notes.keyword);
 
-    const emptyNoteActive = activeNote.length === 0 && (
-      <p className='notes-list__empty-message'>Tidak Ada Catatan</p>
-    );
+  console.log('Notes Content Before Filter:', notes); // Debugging
 
-    const emptyNoteArchive = archiveNote.length === 0 && (
-      <p className='notes-list__empty-message'>Tidak Ada Catatan Yang Di Arsifkan</p>
-    );
+  useEffect(() => {
+    dispatch(fetchApiNotes());
+  }, [dispatch]);
+
+  const validNotes = notes.filter((note) => note && note.title);
+
+  const filterNote = validNotes.filter((note) =>
+    note.title.toLowerCase().includes(keyword.toLowerCase())
+  );
+
+  const activeNote = filterNote.filter((note) => !note.archived);
+  const archiveNote = filterNote.filter((note) => note.archived);
+
+  const emptyNoteActive = activeNote.length === 0 && (
+    <p className="notes-list__empty-message">Tidak Ada Catatan</p>
+  );
+
+  const emptyNoteArchive = archiveNote.length === 0 && (
+    <p className="notes-list__empty-message">Tidak Ada Catatan Yang Di Arsifkan</p>
+  );
 
   return (
     <div>
-        <h2>Catatan Active</h2>
-        {emptyNoteActive}
-        <NoteList notes={activeNote} OnDeleteNote={OnDeleteNote} OnArchiveNote={OnArchiveNote}/>
-        <h2>Arsif</h2>
-        {emptyNoteArchive}
-        <NoteList notes={archiveNote} OnDeleteNote={OnDeleteNote} OnArchiveNote={OnArchiveNote}/>
+      <h2>Catatan Active</h2>
+      {emptyNoteActive}
+      <NoteList notes={activeNote} />
+      <h2>Arsif</h2>
+      {emptyNoteArchive}
+      <NoteList notes={archiveNote} />
     </div>
-  )
-}
+  );
+};
 
-export default NoteLIstBody
+export default NoteLIstBody;

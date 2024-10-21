@@ -1,6 +1,11 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
+import { useDispatch } from 'react-redux'
+import { addApiNote } from "../store/thunks/noteThunk";
+// import { NoteContext} from "../context/NoteAapp";
 
-const NoteInput = ({onCreateNote}) => {
+const NoteInput = () => {
+  // const {onCreateNote} = useContext(NoteContext);
+  const dispatch = useDispatch();
   const initialState = {
     title: "",
     body: "",
@@ -11,13 +16,15 @@ const NoteInput = ({onCreateNote}) => {
 
   const onChangeNote = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
-    console.log(formData);
+    // console.log(formData);
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log(formData);
-    onCreateNote(formData);
+    // console.log(formData);
+    setFormData(initialState);
+    const newNote = {  ...formData, archived: false, createdAt: new Date() };
+    dispatch(addApiNote(newNote));
   }
 
   return (
