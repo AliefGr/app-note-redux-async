@@ -3,13 +3,12 @@ import NoteList from './NoteList';
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchApiNotes } from '../store/thunks/noteThunk';
 
+// Tes AJa
 const NoteLIstBody = () => {
   const dispatch = useDispatch();
 
   const notes = useSelector((state) => state.notes.data);
   const keyword = useSelector((state) => state.notes.keyword);
-
-  console.log('Notes Content Before Filter:', notes); // Debugging
 
   useEffect(() => {
     dispatch(fetchApiNotes());
